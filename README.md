@@ -46,5 +46,8 @@ In the tag you need to define a JSON with the following parameters
 |Event| Name of the custom event as to be displayed in Google Analytics |
 |Category| Category of the event |
 |Label| Custom label |
+<<<<<<< HEAD
 
+=======
+>>>>>>> d7ec6a49fa1f9e3e76e35e92be096431b5c7e10e
 ![Dialogflow CX fulfillment settings](./resources/img/fulfillment-settings.png?raw=true)
