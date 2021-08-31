@@ -32,6 +32,16 @@ const trackEvent = (trackingId: string, userId: string, event: string, value: st
 };
 
 export const analytics = functions.https.onRequest((req, res) => {
+  const { trackingid } = req.headers;
+  if (!trackingid) throw new Error('No trackingId added in authorization headers');
+  const request = req.body as WebhookRequest;
+  const parsedTag = JSON.parse(request.fulfillmentInfo.tag);
+  const event = parsedTag.event || request.sessionInfo.parameters?.event;
+  const category = parsedTag.category || request.sessionInfo.parameters?.category;
+  const label = parsedTag.label || request.sessionInfo.parameters?.label;
+  const sessionId = request.sessionInfo.session.match(/.*\/(.*)$/)![1];
+
+  trackEvent(trackingid as string, sessionId, event, category, label);
 
   res.sendStatus(200);
 });
