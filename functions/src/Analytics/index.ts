@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as request from 'request';
 import * as urlencode from 'urlencode';
+import { DialogflowCXConversation } from '../DialogflowCX/Conv';
 import { WebhookRequest } from '../DialogflowCX/WebhookRequest';
 
 const GOOGLE_ANALYTICS_URL = 'https://www.google-analytics.com/collect';
@@ -34,12 +35,12 @@ const trackEvent = (trackingId: string, userId: string, event: string, value: st
 export const analytics = functions.https.onRequest((req, res) => {
   const { trackingid } = req.headers;
   if (!trackingid) throw new Error('No trackingId added in authorization headers');
-  const request = req.body as WebhookRequest;
-  const parsedTag = JSON.parse(request.fulfillmentInfo.tag);
-  const event = parsedTag.event || request.sessionInfo.parameters?.event;
-  const category = parsedTag.category || request.sessionInfo.parameters?.category;
-  const label = parsedTag.label || request.sessionInfo.parameters?.label;
-  const sessionId = request.sessionInfo.session.match(/.*\/(.*)$/)![1];
+  const conv = new DialogflowCXConversation(req.body as WebhookRequest);
+  const parsedTag = JSON.parse(conv.tag);
+  const event = parsedTag.event || conv.sessionParameters.event;
+  const category = parsedTag.category || conv.sessionParameters.category;
+  const label = parsedTag.label || conv.sessionParameters.label;
+  const sessionId = conv.sessionId.match(/.*\/(.*)$/)![1];
 
   trackEvent(trackingid as string, sessionId, event, category, label);
 
