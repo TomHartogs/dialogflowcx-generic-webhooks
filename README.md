@@ -13,7 +13,8 @@ cd ./dialogflow-cx-generic-webhooks/functions
 firebase --use add PROJECTID
 ```
 ## Longterm storage
-Use this simple webhook if you want to store parameters over multiple sessions.
+Use this simple webhook if you want to store sessionParameters over multiple sessions.
+The webhook will read and write sessionParameters to a firestore database. Allowing you to easily save user progress/context and to retrieve it in a following session.
 
 ### Deployment
 ```bash
