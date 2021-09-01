@@ -6,14 +6,35 @@
 
 This repository contains generic webhooks that can be reused across multiple Dialogflow CX agents.
 
+### Setup
+```bash
+git clone https://github.com/TomHartogs/dialogflowcx-generic-webhooks.git
+cd ./dialogflow-cx-generic-webhooks/functions
+firebase --use add PROJECTID
+```
+## Longterm storage
+Use this simple webhook if you want to store parameters over multiple sessions.
+
+### Deployment
+```bash
+firebase deploy --only functions:longtermstorage
+```
+
+### Usage
+The webhook supports 3 types of tags:
+|Tag|Description|
+|---|---|
+|Save| Saves all session parameters in a firestore document with the sessionId as unique key |
+|Load| Looks for a document with the sessionId and appends the previous sessionParameters to the current parameters |
+|Clear| Clears all session parameters from both the current session and the storage |
+
+Be sure to store the sessionId somewhere in the front-end so you can use the same id with later sessions.
 
 ## Analytics
 This webhook allows the tracking of custom events in your chatbot with the help of Google Analytics.
 ### Deployment
 ```bash
-git clone https://github.com/TomHartogs/dialogflowcx-generic-webhooks.git
-cd ./dialogflow-cx-generic-webhooks/functions
-npm run deploy
+firebase deploy --only functions:analytics
 ```
 > Note: Copy the URL of your function
 
