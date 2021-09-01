@@ -14,16 +14,19 @@ export const longtermstorage = functions.https.onRequest(async (req, res) => {
   const userDoc = db.doc(userId);
   switch (conv.tag) {
     case 'save': {
-      if (conv.sessionParameters.storage) await userDoc.set({ storage: conv.sessionParameters.storage });
+      if (conv.sessionParameters) await userDoc.set(conv.sessionParameters);
       break;
     }
     case 'load': {
       const data = (await userDoc.get()).data();
-      conv.sessionParameters.storage = data?.storage ? data.storage : {};
+      conv.sessionParameters = { ...conv.sessionParameters, ...data };
       break;
     }
     case 'clear': {
-      conv.sessionParameters.storage = {};
+      //conv.sessionParameters = {};
+      Object.keys(conv.sessionParameters).forEach(function (key) {
+        conv.sessionParameters[key] = null;
+      });
       await userDoc.delete();
       break;
     }
