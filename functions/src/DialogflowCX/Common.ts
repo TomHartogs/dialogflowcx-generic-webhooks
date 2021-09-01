@@ -14,7 +14,7 @@ export interface textMessage {
   text: Text;
 }
 export interface payloadMessage {
-  payload: Record<string, unknown>;
+  payload: object;
 }
 export interface conversationSuccessMessage {
   conversationSuccess: ConversationSuccess;
